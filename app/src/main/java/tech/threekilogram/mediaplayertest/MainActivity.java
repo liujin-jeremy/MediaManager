@@ -58,6 +58,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void play(View view) {
 
+        if (mMediaPlayerManager.isReleased()) {
+            mMediaPlayerManager = new MediaPlayerManager();
+        }
         mMediaPlayerManager.play(mSongs.get(0).path);
     }
 

@@ -396,6 +396,15 @@ public class MediaPlayerManager {
     }
 
 
+    /**
+     * @return true released cant play anymore, you need to new {@link MediaPlayerManager}
+     */
+    public boolean isReleased() {
+
+        return mCurrentMediaPlayerState == MEDIA_STATE_END;
+    }
+
+
     public interface OnDataSourceErrorListener {
 
         /**
