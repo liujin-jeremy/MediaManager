@@ -7,8 +7,6 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.objectbus.BusConfig;
-
 import java.util.List;
 import java.util.Locale;
 
@@ -32,9 +30,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        BusConfig.init();
         mMediaPlayerManager = new MediaPlayerManager();
         mMediaPlayerManager.setOnCompletionListener(new CompleteListener());
+
+        queryLocalSongs();
     }
 
 
@@ -56,8 +55,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void play(View view) {
-
-        queryLocalSongs();
 
         mMediaPlayerManager.play(mSongs.get(0).path);
     }
