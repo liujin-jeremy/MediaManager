@@ -144,9 +144,13 @@ public class MainActivity extends AppCompatActivity {
 
         super.onDestroy();
 
+    }
+
+
+    public void release(View view) {
         /* 记得释放 */
 
-        //mMediaPlayerManager.release();
+        mMediaPlayerManager.release();
     }
 
 

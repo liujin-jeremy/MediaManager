@@ -28,8 +28,9 @@ public class MediaPlayerManager {
     public static final int MEDIA_STATE_PAUSED             = 5;
     public static final int MEDIA_STATE_STOPPED            = 6;
     public static final int MEDIA_STATE_PLAYBACK_COMPLETED = 7;
-    public static final int MEDIA_STATE_ERROR              = 99;
-    public static final int MEDIA_STATE_END                = 100;
+
+    public static final int MEDIA_STATE_ERROR = 99;
+    public static final int MEDIA_STATE_END   = 100;
 
     private int mCurrentMediaPlayerState;
 
@@ -81,6 +82,12 @@ public class MediaPlayerManager {
 
 
     public MediaPlayerManager() {
+
+        createMediaPlayer();
+    }
+
+
+    private void createMediaPlayer() {
 
         mMediaPlayer = new MediaPlayer();
         mCurrentMediaPlayerState = MEDIA_STATE_IDLE;
@@ -215,7 +222,9 @@ public class MediaPlayerManager {
     public int getDuration(int errorCode) {
 
         int state = mCurrentMediaPlayerState;
-        if (state != MEDIA_STATE_IDLE && state != MEDIA_STATE_INITIALIZED) {
+        if (state == MEDIA_STATE_STARTED ||
+                state == MEDIA_STATE_PAUSED ||
+                state == MEDIA_STATE_PLAYBACK_COMPLETED) {
             return mMediaPlayer.getDuration();
         }
 
@@ -242,7 +251,9 @@ public class MediaPlayerManager {
     public void seekTo(int position) {
 
         int state = mCurrentMediaPlayerState;
-        if (state != MEDIA_STATE_IDLE && state != MEDIA_STATE_INITIALIZED && state != MEDIA_STATE_STOPPED) {
+        if (state == MEDIA_STATE_STARTED ||
+                state == MEDIA_STATE_PAUSED ||
+                state == MEDIA_STATE_PLAYBACK_COMPLETED) {
 
             mMediaOnSeekCompleteListener.setSeekPosition(position);
             mMediaPlayer.seekTo(position);
@@ -314,13 +325,13 @@ public class MediaPlayerManager {
         }
 
 
-        public void setSeekPosition(int seekPosition) {
+        void setSeekPosition(int seekPosition) {
 
             mSeekPosition = seekPosition;
         }
 
 
-        public void setOnSeekCompleteListener(OnSeekCompleteListener onSeekCompleteListener) {
+        void setOnSeekCompleteListener(OnSeekCompleteListener onSeekCompleteListener) {
 
             mOnSeekCompleteListener = onSeekCompleteListener;
         }
@@ -367,7 +378,7 @@ public class MediaPlayerManager {
         }
 
 
-        public void setOnCompletionListener(OnCompletionListener onCompletionListener) {
+        void setOnCompletionListener(OnCompletionListener onCompletionListener) {
 
             mOnCompletionListener = onCompletionListener;
         }
@@ -381,6 +392,7 @@ public class MediaPlayerManager {
 
         mMediaPlayer.reset();
         mMediaPlayer.release();
+        mCurrentMediaPlayerState = MEDIA_STATE_END;
     }
 
 
@@ -410,6 +422,7 @@ public class MediaPlayerManager {
         @Override
         public boolean onError(MediaPlayer mp, int what, int extra) {
 
+            mCurrentMediaPlayerState = MEDIA_STATE_ERROR;
             mMediaPlayer = MediaErrorStateHelper.handleErrorState(what, extra, mp);
             mCurrentMediaPlayerState = MEDIA_STATE_IDLE;
 
@@ -421,7 +434,7 @@ public class MediaPlayerManager {
         }
 
 
-        public void setOnDataSourceErrorListener(
+        void setOnDataSourceErrorListener(
                 OnDataSourceErrorListener onDataSourceErrorListener) {
 
             mOnDataSourceErrorListener = onDataSourceErrorListener;
@@ -452,7 +465,7 @@ public class MediaPlayerManager {
          *
          * @param what error state
          */
-        public static void printErrorState(int what, int extra) {
+        static void printErrorState(int what, int extra) {
 
             String whatMsg = "";
 
