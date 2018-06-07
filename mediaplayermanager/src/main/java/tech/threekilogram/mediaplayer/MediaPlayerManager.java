@@ -15,7 +15,8 @@ import java.lang.annotation.RetentionPolicy;
 public class MediaPlayerManager {
 
     private MediaPlayer                 mMediaPlayer;
-    private MediaOnErrorListener        mOnErrorListener;
+    private MediaOnErrorListener        mMediaOnErrorListener;
+    private MediaOnPreparedListener     mMediaOnPreparedListener;
     private MediaOnCompletionListener   mMediaOnCompletionListener;
     private MediaOnSeekCompleteListener mMediaOnSeekCompleteListener;
 
@@ -85,7 +86,8 @@ public class MediaPlayerManager {
         mCurrentMediaPlayerState = MEDIA_STATE_IDLE;
 
         makeSureListenerNotNull();
-        mMediaPlayer.setOnErrorListener(mOnErrorListener);
+        mMediaPlayer.setOnErrorListener(mMediaOnErrorListener);
+        mMediaPlayer.setOnPreparedListener(mMediaOnPreparedListener);
         mMediaPlayer.setOnCompletionListener(mMediaOnCompletionListener);
         mMediaPlayer.setOnSeekCompleteListener(mMediaOnSeekCompleteListener);
     }
@@ -96,9 +98,9 @@ public class MediaPlayerManager {
      */
     private void makeSureListenerNotNull() {
 
-        if (mOnErrorListener == null) {
+        if (mMediaOnErrorListener == null) {
 
-            mOnErrorListener = new MediaOnErrorListener();
+            mMediaOnErrorListener = new MediaOnErrorListener();
         }
 
         if (mMediaOnCompletionListener == null) {
@@ -109,6 +111,11 @@ public class MediaPlayerManager {
         if (mMediaOnSeekCompleteListener == null) {
 
             mMediaOnSeekCompleteListener = new MediaOnSeekCompleteListener();
+        }
+
+        if (mMediaOnPreparedListener == null) {
+
+            mMediaOnPreparedListener = new MediaOnPreparedListener();
         }
     }
 
@@ -155,11 +162,7 @@ public class MediaPlayerManager {
             mCurrentMediaPlayerState = MEDIA_STATE_INITIALIZED;
 
             mCurrentMediaPlayerState = MEDIA_STATE_PREPARING;
-            mMediaPlayer.prepare();
-            mCurrentMediaPlayerState = MEDIA_STATE_PREPARED;
-
-            mMediaPlayer.start();
-            mCurrentMediaPlayerState = MEDIA_STATE_STARTED;
+            mMediaPlayer.prepareAsync();
 
         } catch (Exception e) {
 
@@ -246,6 +249,21 @@ public class MediaPlayerManager {
         }
     }
 
+
+    /**
+     * 异步准备,准备好之后开始
+     */
+    private class MediaOnPreparedListener implements MediaPlayer.OnPreparedListener {
+
+        @Override
+        public void onPrepared(MediaPlayer mp) {
+
+            mCurrentMediaPlayerState = MEDIA_STATE_PREPARED;
+
+            mMediaPlayer.start();
+            mCurrentMediaPlayerState = MEDIA_STATE_STARTED;
+        }
+    }
 
     /**
      * {@link #seekTo(int)}完成后的回调
@@ -417,7 +435,7 @@ public class MediaPlayerManager {
     public void setOnDataSourceErrorListener(
             OnDataSourceErrorListener onDataSourceErrorListener) {
 
-        mOnErrorListener.setOnDataSourceErrorListener(onDataSourceErrorListener);
+        mMediaOnErrorListener.setOnDataSourceErrorListener(onDataSourceErrorListener);
     }
 
 

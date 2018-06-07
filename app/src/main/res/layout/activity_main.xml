@@ -112,6 +112,25 @@
                 android:onClick="seekToStart"
                 android:text="seekToStart"/>
 
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+            <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="prev"
+                    android:text="prev"/>
+
+            <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="next"
+                    android:text="next"/>
+
+        </LinearLayout>
+
     </LinearLayout>
 
 </ScrollView>

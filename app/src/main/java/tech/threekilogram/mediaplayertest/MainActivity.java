@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private List< Song >       mSongs;
     private MediaPlayerManager mMediaPlayerManager;
+    private int mIndex = 0;
 
 
     @Override
@@ -31,7 +32,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mMediaPlayerManager = new MediaPlayerManager();
-        mMediaPlayerManager.setOnCompletionListener(new CompleteListener());
+        CompleteListener listener = new CompleteListener();
+        mMediaPlayerManager.setOnCompletionListener(listener);
 
         queryLocalSongs();
     }
@@ -107,9 +109,48 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private class CompleteListener implements MediaPlayerManager.OnCompletionListener {
+    public void prev(View view) {
 
-        private int index = 0;
+        queryLocalSongs();
+
+        int index = mIndex - 1;
+
+        if (index < 0) {
+            index = 0;
+        }
+
+        mMediaPlayerManager.play(mSongs.get(index).path);
+        mIndex = index;
+    }
+
+
+    public void next(View view) {
+
+        queryLocalSongs();
+
+        int index = mIndex + 1;
+
+        if (index >= mSongs.size()) {
+            index = mSongs.size() - 1;
+        }
+
+        mMediaPlayerManager.play(mSongs.get(index).path);
+        mIndex = index;
+    }
+
+
+    @Override
+    protected void onDestroy() {
+
+        super.onDestroy();
+
+        /* 记得释放 */
+
+        //mMediaPlayerManager.release();
+    }
+
+
+    private class CompleteListener implements MediaPlayerManager.OnCompletionListener {
 
 
         @Override
@@ -118,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
             Log.i(TAG, "onCompletion:" + "");
             Toast.makeText(MainActivity.this, "播放完成", Toast.LENGTH_SHORT).show();
 
-            manager.play(mSongs.get(++index).path);
+            manager.play(mSongs.get(++mIndex).path);
         }
     }
 }
