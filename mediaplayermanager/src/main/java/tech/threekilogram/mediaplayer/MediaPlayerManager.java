@@ -1,5 +1,6 @@
 package tech.threekilogram.mediaplayer;
 
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.support.annotation.IntDef;
 import android.util.Log;
@@ -93,6 +94,10 @@ public class MediaPlayerManager {
         mCurrentMediaPlayerState = MEDIA_STATE_IDLE;
 
         makeSureListenerNotNull();
+
+        // TODO: 2018-06-12 是否合适?
+        mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+
         mMediaPlayer.setOnErrorListener(mMediaOnErrorListener);
         mMediaPlayer.setOnPreparedListener(mMediaOnPreparedListener);
         mMediaPlayer.setOnCompletionListener(mMediaOnCompletionListener);
@@ -266,15 +271,57 @@ public class MediaPlayerManager {
      */
     private class MediaOnPreparedListener implements MediaPlayer.OnPreparedListener {
 
+        /**
+         * 用户设置的准备完毕监听
+         */
+        private OnPreparedListener mUserOnPreparedListener;
+
+
         @Override
         public void onPrepared(MediaPlayer mp) {
 
             mCurrentMediaPlayerState = MEDIA_STATE_PREPARED;
 
+            if (mUserOnPreparedListener != null) {
+                mUserOnPreparedListener.onPrepared(MediaPlayerManager.this);
+            }
+
             mMediaPlayer.start();
             mCurrentMediaPlayerState = MEDIA_STATE_STARTED;
         }
+
+
+        public void setUserOnPreparedListener(OnPreparedListener userOnPreparedListener) {
+
+            mUserOnPreparedListener = userOnPreparedListener;
+        }
     }
+
+    /**
+     * 每首歌准备好之后回调,之后才开始播放
+     */
+    public interface OnPreparedListener {
+
+        /**
+         * 已经准备完毕
+         *
+         * @param manager manager
+         */
+        void onPrepared(MediaPlayerManager manager);
+
+    }
+
+
+    /**
+     * 为{@link #mMediaPlayer}设置准备监听
+     *
+     * @param userOnPreparedListener 准备完毕监听,每首歌播放之前回调
+     */
+    public void setOnPreparedListener(OnPreparedListener userOnPreparedListener) {
+
+        mMediaOnPreparedListener.setUserOnPreparedListener(userOnPreparedListener);
+    }
+
 
     /**
      * {@link #seekTo(int)}完成后的回调
