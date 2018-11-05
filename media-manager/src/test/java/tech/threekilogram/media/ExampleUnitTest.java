@@ -1,8 +1,8 @@
-package tech.threekilogram.mediaplayer;
-
-import org.junit.Test;
+package tech.threekilogram.media;
 
 import static org.junit.Assert.*;
+
+import org.junit.Test;
 
 /**
  * Example local unit test, which will execute on the development machine (host).

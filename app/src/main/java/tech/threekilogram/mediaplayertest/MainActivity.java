@@ -8,10 +8,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 import java.util.List;
 import java.util.Locale;
-import tech.threekilogram.mediaplayer.MediaPlayerManager;
-import tech.threekilogram.mediaplayer.MediaPlayerManager.OnDataSourceErrorListener;
-import tech.threekilogram.mediaplayer.MediaPlayerManager.OnPreparedListener;
-import tech.threekilogram.mediaplayer.MediaPlayerManager.OnSeekCompleteListener;
+import tech.threekilogram.media.mediaplayer.MediaPlayerManager;
+import tech.threekilogram.media.mediaplayer.MediaPlayerManager.OnDataSourceErrorListener;
+import tech.threekilogram.media.mediaplayer.MediaPlayerManager.OnPreparedListener;
+import tech.threekilogram.media.mediaplayer.MediaPlayerManager.OnSeekCompleteListener;
 import tech.threekilogram.mediaplayertest.action.QueryLocalSongsAction;
 import tech.threekilogram.mediaplayertest.bean.Song;
 
