@@ -2,7 +2,7 @@
 ## MediaPlayer 封装
 
 ```
-implementation 'tech.threekilogram:media-manager:2.1.0'
+implementation 'tech.threekilogram:media-manager:2.1.1'
 ```
 
 ### 创建
