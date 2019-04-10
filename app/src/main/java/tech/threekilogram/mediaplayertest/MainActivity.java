@@ -1,5 +1,9 @@
 package tech.threekilogram.mediaplayertest;
 
+import android.media.MediaPlayer;
+import android.media.MediaPlayer.OnCompletionListener;
+import android.media.MediaPlayer.OnErrorListener;
+import android.media.MediaPlayer.OnPreparedListener;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -9,9 +13,6 @@ import android.widget.Toast;
 import java.util.List;
 import java.util.Locale;
 import tech.threekilogram.media.mediaplayer.MediaPlayerManager;
-import tech.threekilogram.media.mediaplayer.MediaPlayerManager.OnDataSourceErrorListener;
-import tech.threekilogram.media.mediaplayer.MediaPlayerManager.OnPreparedListener;
-import tech.threekilogram.media.mediaplayer.MediaPlayerManager.OnSeekCompleteListener;
 import tech.threekilogram.mediaplayertest.action.QueryLocalSongsAction;
 import tech.threekilogram.mediaplayertest.bean.Song;
 
@@ -21,165 +22,168 @@ import tech.threekilogram.mediaplayertest.bean.Song;
 public class MainActivity extends AppCompatActivity {
 
       private static final String TAG = "MainActivity";
+
       private List<Song>         mSongs;
       private MediaPlayerManager mMediaPlayerManager;
-      private int mIndex = 0;
+      private int                mIndex = 0;
 
       @Override
-      protected void onCreate (Bundle savedInstanceState) {
+      protected void onCreate ( Bundle savedInstanceState ) {
 
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_main);
+            super.onCreate( savedInstanceState );
+            setContentView( R.layout.activity_main );
 
             mMediaPlayerManager = new MediaPlayerManager();
             CompleteListener listener = new CompleteListener();
-            mMediaPlayerManager.setOnCompletionListener(listener);
-            mMediaPlayerManager.setOnDataSourceErrorListener(new DataSourceErrorListener());
-            mMediaPlayerManager.setOnPreparedListener(new PreparedListener());
+            mMediaPlayerManager.setOnCompletionListener( listener );
+            mMediaPlayerManager.setOnErrorListener( new DataSourceErrorListener() );
+            mMediaPlayerManager.setOnPreparedListener( new PreparedListener() );
 
             queryLocalSongs();
       }
 
-      private void queryLocalSongs () {
+      private void queryLocalSongs ( ) {
 
-            if(mSongs == null || mSongs.size() == 0) {
-                  mSongs = QueryLocalSongsAction.queryLocalSongs(this);
+            if( mSongs == null || mSongs.size() == 0 ) {
+                  mSongs = QueryLocalSongsAction.queryLocalSongs( this );
             }
       }
 
       @Override
-      protected void onDestroy () {
+      protected void onDestroy ( ) {
 
             super.onDestroy();
       }
 
-      public void getCurrentMediaPlayerState (View view) {
+      public void getCurrentMediaPlayerState ( View view ) {
 
             int state = mMediaPlayerManager.getCurrentMediaPlayerState();
-            String s = MediaPlayerManager.mediaStateString(state);
+            String s = MediaPlayerManager.mediaStateString( state );
 
-            ((TextView) findViewById(R.id.tv01)).setText(s);
+            ( (TextView) findViewById( R.id.tv01 ) ).setText( s );
       }
 
-      public void play (View view) {
+      public void play ( View view ) {
 
-            if(mMediaPlayerManager.isReleased()) {
+            if( mMediaPlayerManager.isReleased() ) {
                   mMediaPlayerManager = new MediaPlayerManager();
             }
-            mMediaPlayerManager.play(mSongs.get(0).path);
+            mMediaPlayerManager.play( mSongs.get( 0 ).path );
       }
 
-      public void isPlaying (View view) {
+      public void isPlaying ( View view ) {
 
             boolean playing = mMediaPlayerManager.isPlaying();
-            String result = String.format(Locale.CHINA, "isPaying : %b", playing);
-            ((TextView) findViewById(R.id.tv00)).setText(result);
+            String result = String.format( Locale.CHINA, "isPaying : %b", playing );
+            ( (TextView) findViewById( R.id.tv00 ) ).setText( result );
       }
 
-      public void pause (View view) {
+      public void pause ( View view ) {
 
             mMediaPlayerManager.pause();
       }
 
-      public void resume (View view) {
+      public void resume ( View view ) {
 
             mMediaPlayerManager.resume();
       }
 
-      public void getDuration (View view) {
+      public void getDuration ( View view ) {
 
-            int duration = mMediaPlayerManager.getDuration(404);
-            String result = String.format(Locale.CHINA, ": %f.3", duration / 1000f);
-            ((TextView) findViewById(R.id.tv02)).setText(result);
+            int duration = mMediaPlayerManager.getDuration( 404 );
+            String result = String.format( Locale.CHINA, ": %f.3", duration / 1000f );
+            ( (TextView) findViewById( R.id.tv02 ) ).setText( result );
       }
 
-      public void currentPosition (View view) {
+      public void currentPosition ( View view ) {
 
             int position = mMediaPlayerManager.getCurrentPosition();
-            String result = String.format(Locale.CHINA, ": %f.3", position / 1000f);
-            ((TextView) findViewById(R.id.tv03)).setText(result);
+            String result = String.format( Locale.CHINA, ": %f.3", position / 1000f );
+            ( (TextView) findViewById( R.id.tv03 ) ).setText( result );
       }
 
-      public void seekToStart (View view) {
+      public void seekToStart ( View view ) {
 
             mMediaPlayerManager.setOnSeekCompleteListener(
-                (manager, position) -> {
-                      Log.i(TAG, "onSeekComplete:" + position);
+                ( manager, position ) -> {
+                      Log.i( TAG, "onSeekComplete:" + position );
                 }
             );
-            mMediaPlayerManager.seekTo(0);
+            mMediaPlayerManager.seekTo( 0 );
       }
 
-      public void prev (View view) {
+      public void prev ( View view ) {
 
             queryLocalSongs();
 
             int index = mIndex - 1;
 
-            if(index < 0) {
+            if( index < 0 ) {
                   index = 0;
             }
 
-            mMediaPlayerManager.play(mSongs.get(index).path);
+            mMediaPlayerManager.play( mSongs.get( index ).path );
             mIndex = index;
       }
 
-      public void next (View view) {
+      public void next ( View view ) {
 
             queryLocalSongs();
 
             int index = mIndex + 1;
 
-            if(index >= mSongs.size()) {
+            if( index >= mSongs.size() ) {
                   index = mSongs.size() - 1;
             }
 
-            mMediaPlayerManager.play(mSongs.get(index).path);
+            mMediaPlayerManager.play( mSongs.get( index ).path );
             mIndex = index;
       }
 
-      public void release (View view) {
+      public void release ( View view ) {
             /* 记得释放 */
 
             mMediaPlayerManager.release();
       }
 
-      private class CompleteListener implements MediaPlayerManager.OnCompletionListener {
+      private class CompleteListener implements OnCompletionListener {
 
             @Override
-            public void onCompletion (MediaPlayerManager manager) {
+            public void onCompletion ( MediaPlayer manager ) {
 
-                  Log.i(TAG, "onCompletion:" + "");
-                  Toast.makeText(MainActivity.this, "播放完成", Toast.LENGTH_SHORT).show();
+                  Log.i( TAG, "onCompletion:" + "" );
+                  Toast.makeText( MainActivity.this, "播放完成", Toast.LENGTH_SHORT ).show();
 
-                  manager.play(mSongs.get(++mIndex).path);
+                  mMediaPlayerManager.play( mSongs.get( ++mIndex ).path );
             }
       }
 
-      private class DataSourceErrorListener implements OnDataSourceErrorListener {
+      private class DataSourceErrorListener implements OnErrorListener {
 
             @Override
-            public void onError (MediaPlayerManager manager, int what, int extra) {
+            public boolean onError ( MediaPlayer mp, int what, int extra ) {
 
-                  Log.e(TAG, "onError : data");
+                  Log.e( TAG, "onError : data" );
+
+                  return false;
             }
       }
 
       private class PreparedListener implements OnPreparedListener {
 
             @Override
-            public void onPrepared (MediaPlayerManager manager) {
+            public void onPrepared ( MediaPlayer mp ) {
 
-                  Log.e(TAG, "onPrepared : ");
+                  Log.e( TAG, "onPrepared : " );
             }
       }
 
-      private class OnSeekFinishListener implements OnSeekCompleteListener {
+      private class OnSeekFinishListener implements MediaPlayerManager.OnSeekCompleteListener {
 
             @Override
-            public void onSeekComplete (MediaPlayerManager manager, int position) {
+            public void onSeekComplete ( MediaPlayer mp, int position ) {
 
-                  Log.e(TAG, "onSeekComplete : " + position);
+                  Log.e( TAG, "onSeekComplete : " + position );
             }
       }
 }

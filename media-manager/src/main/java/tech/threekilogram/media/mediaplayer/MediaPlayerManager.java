@@ -2,6 +2,7 @@ package tech.threekilogram.media.mediaplayer;
 
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.media.MediaPlayer.OnErrorListener;
 import android.support.annotation.IntDef;
 import android.util.Log;
 import java.lang.annotation.Retention;
@@ -12,72 +13,71 @@ import java.lang.annotation.RetentionPolicy;
  *
  * @author wuxio 2018-06-07:10:56
  */
-@SuppressWarnings("WeakerAccess")
 public class MediaPlayerManager {
 
       /**
        * 闲置播放状态
        */
-      public static final int MEDIA_STATE_IDLE               = 0;
+      public static final int                         MEDIA_STATE_IDLE               = 0;
       /**
        * 播放器已经初始化
        */
-      public static final int MEDIA_STATE_INITIALIZED        = 1;
+      public static final int                         MEDIA_STATE_INITIALIZED        = 1;
       /**
        * 播放器准备中
        */
-      public static final int MEDIA_STATE_PREPARING          = 2;
+      public static final int                         MEDIA_STATE_PREPARING          = 2;
       /**
        * 播放器准备完成
        */
-      public static final int MEDIA_STATE_PREPARED           = 3;
+      public static final int                         MEDIA_STATE_PREPARED           = 3;
       /**
        * 开始播放
        */
-      public static final int MEDIA_STATE_STARTED            = 4;
+      public static final int                         MEDIA_STATE_STARTED            = 4;
       /**
        * 暂停
        */
-      public static final int MEDIA_STATE_PAUSED             = 5;
+      public static final int                         MEDIA_STATE_PAUSED             = 5;
       /**
        * 停止
        */
-      public static final int MEDIA_STATE_STOPPED            = 6;
+      public static final int                         MEDIA_STATE_STOPPED            = 6;
       /**
        * 播放完成
        */
-      public static final int MEDIA_STATE_PLAYBACK_COMPLETED = 7;
+      public static final int                         MEDIA_STATE_PLAYBACK_COMPLETED = 7;
       /**
        * 异常
        */
-      public static final int MEDIA_STATE_ERROR              = 99;
+      public static final int                         MEDIA_STATE_ERROR              = 99;
       /**
        * 释放播放器
        */
-      public static final int MEDIA_STATE_END                = 100;
+      public static final int                         MEDIA_STATE_END                = 100;
       /**
        * 播放器
        */
-      private MediaPlayer                 mMediaPlayer;
+      private             MediaPlayer                 mMediaPlayer;
       /**
        * 播放器异常处理类
        */
-      private MediaOnErrorListener        mMediaOnErrorListener;
+      private             MediaOnErrorListener        mMediaOnErrorListener;
       /**
        * 准备播放
        */
-      private MediaOnPreparedListener     mMediaOnPreparedListener;
+      private             MediaOnPreparedListener     mMediaOnPreparedListener;
       /**
        * 播放完成
        */
-      private MediaOnCompletionListener   mMediaOnCompletionListener;
+      private             MediaOnCompletionListener   mMediaOnCompletionListener;
       /**
        * 调整播放进度
        */
-      private MediaOnSeekCompleteListener mMediaOnSeekCompleteListener;
-      private int                         mCurrentMediaPlayerState;
+      private             MediaOnSeekCompleteListener mMediaOnSeekCompleteListener;
+      private             int                         mCurrentMediaPlayerState;
 
-      public MediaPlayerManager () {
+      public MediaPlayerManager ( ) {
 
             createMediaPlayer();
       }
@@ -85,78 +85,78 @@ public class MediaPlayerManager {
       /**
        * 初始化播放器
        */
-      private void createMediaPlayer () {
+      private void createMediaPlayer ( ) {
 
             mMediaPlayer = new MediaPlayer();
             mCurrentMediaPlayerState = MEDIA_STATE_IDLE;
 
-            mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+            mMediaPlayer.setAudioStreamType( AudioManager.STREAM_MUSIC );
 
             makeSureListenerNotNull();
-            mMediaPlayer.setOnErrorListener(mMediaOnErrorListener);
-            mMediaPlayer.setOnPreparedListener(mMediaOnPreparedListener);
-            mMediaPlayer.setOnCompletionListener(mMediaOnCompletionListener);
-            mMediaPlayer.setOnSeekCompleteListener(mMediaOnSeekCompleteListener);
+            mMediaPlayer.setOnErrorListener( mMediaOnErrorListener );
+            mMediaPlayer.setOnPreparedListener( mMediaOnPreparedListener );
+            mMediaPlayer.setOnCompletionListener( mMediaOnCompletionListener );
+            mMediaPlayer.setOnSeekCompleteListener( mMediaOnSeekCompleteListener );
       }
 
       /**
        * 初始化listener
        */
-      private void makeSureListenerNotNull () {
+      private void makeSureListenerNotNull ( ) {
 
-            if(mMediaOnErrorListener == null) {
+            if( mMediaOnErrorListener == null ) {
 
                   mMediaOnErrorListener = new MediaOnErrorListener();
             }
 
-            if(mMediaOnCompletionListener == null) {
+            if( mMediaOnCompletionListener == null ) {
 
                   mMediaOnCompletionListener = new MediaOnCompletionListener();
             }
 
-            if(mMediaOnSeekCompleteListener == null) {
+            if( mMediaOnSeekCompleteListener == null ) {
 
                   mMediaOnSeekCompleteListener = new MediaOnSeekCompleteListener();
             }
 
-            if(mMediaOnPreparedListener == null) {
+            if( mMediaOnPreparedListener == null ) {
 
                   mMediaOnPreparedListener = new MediaOnPreparedListener();
             }
       }
 
-      public static String mediaStateString (int currentMediaState) {
+      public static String mediaStateString ( int currentMediaState ) {
 
             String result = "";
 
-            if(currentMediaState == MEDIA_STATE_IDLE) {
+            if( currentMediaState == MEDIA_STATE_IDLE ) {
 
                   result = "media state : IDLE";
-            } else if(currentMediaState == MEDIA_STATE_INITIALIZED) {
+            } else if( currentMediaState == MEDIA_STATE_INITIALIZED ) {
 
                   result = "media state : INITIALIZED";
-            } else if(currentMediaState == MEDIA_STATE_PREPARING) {
+            } else if( currentMediaState == MEDIA_STATE_PREPARING ) {
 
                   result = "media state : PREPARING";
-            } else if(currentMediaState == MEDIA_STATE_PREPARED) {
+            } else if( currentMediaState == MEDIA_STATE_PREPARED ) {
 
                   result = "media state : PREPARED";
-            } else if(currentMediaState == MEDIA_STATE_STARTED) {
+            } else if( currentMediaState == MEDIA_STATE_STARTED ) {
 
                   result = "media state : STARTED";
-            } else if(currentMediaState == MEDIA_STATE_PAUSED) {
+            } else if( currentMediaState == MEDIA_STATE_PAUSED ) {
 
                   result = "media state : PAUSED";
-            } else if(currentMediaState == MEDIA_STATE_STOPPED) {
+            } else if( currentMediaState == MEDIA_STATE_STOPPED ) {
 
                   result = "media state : STOPPED";
-            } else if(currentMediaState == MEDIA_STATE_PLAYBACK_COMPLETED) {
+            } else if( currentMediaState == MEDIA_STATE_PLAYBACK_COMPLETED ) {
 
                   result = "media state : PLAYBACK_COMPLETED";
-            } else if(currentMediaState == MEDIA_STATE_END) {
+            } else if( currentMediaState == MEDIA_STATE_END ) {
 
                   result = "media state : released " + currentMediaState;
-            } else if(currentMediaState == MEDIA_STATE_ERROR) {
+            } else if( currentMediaState == MEDIA_STATE_ERROR ) {
 
                   result = "media state : data error " + currentMediaState;
             } else {
@@ -171,7 +171,7 @@ public class MediaPlayerManager {
        * @return 当前 {@link #mMediaPlayer} 状态
        */
       @MediaPlayerState
-      public int getCurrentMediaPlayerState () {
+      public int getCurrentMediaPlayerState ( ) {
 
             return mCurrentMediaPlayerState;
       }
@@ -179,14 +179,14 @@ public class MediaPlayerManager {
       /**
        * @param path 播放
        */
-      public void play (String path) {
+      public void play ( String path ) {
 
             try {
 
                   mMediaPlayer.reset();
                   mCurrentMediaPlayerState = MEDIA_STATE_IDLE;
 
-                  mMediaPlayer.setDataSource(path);
+                  mMediaPlayer.setDataSource( path );
                   mCurrentMediaPlayerState = MEDIA_STATE_INITIALIZED;
 
                   mCurrentMediaPlayerState = MEDIA_STATE_PREPARING;
@@ -202,7 +202,7 @@ public class MediaPlayerManager {
        *
        * @return true mediaPlayer is playing
        */
-      public boolean isPlaying () {
+      public boolean isPlaying ( ) {
 
             return mMediaPlayer.isPlaying();
       }
@@ -210,9 +210,9 @@ public class MediaPlayerManager {
       /**
        * 暂停
        */
-      public void pause () {
+      public void pause ( ) {
 
-            if(mCurrentMediaPlayerState == MEDIA_STATE_STARTED) {
+            if( mCurrentMediaPlayerState == MEDIA_STATE_STARTED ) {
                   mMediaPlayer.pause();
                   mCurrentMediaPlayerState = MEDIA_STATE_PAUSED;
             }
@@ -221,9 +221,9 @@ public class MediaPlayerManager {
       /**
        * 从暂停恢复到播放状态
        */
-      public void resume () {
+      public void resume ( ) {
 
-            if(mCurrentMediaPlayerState == MEDIA_STATE_PAUSED) {
+            if( mCurrentMediaPlayerState == MEDIA_STATE_PAUSED ) {
                   mMediaPlayer.start();
                   mCurrentMediaPlayerState = MEDIA_STATE_STARTED;
             }
@@ -236,12 +236,12 @@ public class MediaPlayerManager {
        *
        * @return 总时长
        */
-      public int getDuration (int errorCode) {
+      public int getDuration ( int errorCode ) {
 
             int state = mCurrentMediaPlayerState;
-            if(state == MEDIA_STATE_STARTED ||
+            if( state == MEDIA_STATE_STARTED ||
                 state == MEDIA_STATE_PAUSED ||
-                state == MEDIA_STATE_PLAYBACK_COMPLETED) {
+                state == MEDIA_STATE_PLAYBACK_COMPLETED ) {
                   return mMediaPlayer.getDuration();
             }
 
@@ -253,7 +253,7 @@ public class MediaPlayerManager {
        *
        * @return 当前播放位置
        */
-      public int getCurrentPosition () {
+      public int getCurrentPosition ( ) {
 
             return mMediaPlayer.getCurrentPosition();
       }
@@ -261,15 +261,15 @@ public class MediaPlayerManager {
       /**
        * @param position new position
        */
-      public void seekTo (int position) {
+      public void seekTo ( int position ) {
 
             int state = mCurrentMediaPlayerState;
-            if(state == MEDIA_STATE_STARTED ||
+            if( state == MEDIA_STATE_STARTED ||
                 state == MEDIA_STATE_PAUSED ||
-                state == MEDIA_STATE_PLAYBACK_COMPLETED) {
+                state == MEDIA_STATE_PLAYBACK_COMPLETED ) {
 
-                  mMediaOnSeekCompleteListener.setSeekPosition(position);
-                  mMediaPlayer.seekTo(position);
+                  mMediaOnSeekCompleteListener.setSeekPosition( position );
+                  mMediaPlayer.seekTo( position );
             }
       }
 
@@ -278,31 +278,31 @@ public class MediaPlayerManager {
        *
        * @param userOnPreparedListener 准备完毕监听,每首歌播放之前回调
        */
-      public void setOnPreparedListener (OnPreparedListener userOnPreparedListener) {
+      public void setOnPreparedListener ( MediaPlayer.OnPreparedListener userOnPreparedListener ) {
 
-            mMediaOnPreparedListener.setUserOnPreparedListener(userOnPreparedListener);
+            mMediaOnPreparedListener.setUserOnPreparedListener( userOnPreparedListener );
       }
 
       /**
        * 设置 {@link #seekTo(int)} 完成监听
        */
-      public void setOnSeekCompleteListener (OnSeekCompleteListener onSeekCompleteListener) {
+      public void setOnSeekCompleteListener ( OnSeekCompleteListener onSeekCompleteListener ) {
 
-            mMediaOnSeekCompleteListener.setOnSeekCompleteListener(onSeekCompleteListener);
+            mMediaOnSeekCompleteListener.setOnSeekCompleteListener( onSeekCompleteListener );
       }
 
       /**
        * 为 {@link #mMediaPlayer} 设置播放完成监听
        */
-      public void setOnCompletionListener (OnCompletionListener onCompletionListener) {
+      public void setOnCompletionListener ( MediaPlayer.OnCompletionListener onCompletionListener ) {
 
-            mMediaOnCompletionListener.setOnCompletionListener(onCompletionListener);
+            mMediaOnCompletionListener.setOnCompletionListener( onCompletionListener );
       }
 
       /**
        * 释放资源
        */
-      public void release () {
+      public void release ( ) {
 
             mMediaPlayer.reset();
             mMediaPlayer.release();
@@ -312,7 +312,7 @@ public class MediaPlayerManager {
       /**
        * @return true released cant play anymore, you need to new {@link MediaPlayerManager}
        */
-      public boolean isReleased () {
+      public boolean isReleased ( ) {
 
             return mCurrentMediaPlayerState == MEDIA_STATE_END;
       }
@@ -320,10 +320,10 @@ public class MediaPlayerManager {
       /**
        * 设置数据数据错误监听
        */
-      public void setOnDataSourceErrorListener (
-          OnDataSourceErrorListener onDataSourceErrorListener) {
+      public void setOnErrorListener (
+          MediaPlayer.OnErrorListener onDataSourceErrorListener ) {
 
-            mMediaOnErrorListener.setOnDataSourceErrorListener(onDataSourceErrorListener);
+            mMediaOnErrorListener.setOnErrorListener( onDataSourceErrorListener );
       }
 
       /**
@@ -340,20 +340,7 @@ public class MediaPlayerManager {
           MEDIA_STATE_PLAYBACK_COMPLETED,
       })
       @Retention(RetentionPolicy.SOURCE)
-      public @interface MediaPlayerState {}
-
-      /**
-       * 每首歌准备好之后回调,之后才开始播放
-       */
-      public interface OnPreparedListener {
-
-            /**
-             * 已经准备完毕
-             *
-             * @param manager manager
-             */
-            void onPrepared (MediaPlayerManager manager);
-      }
+      public @interface MediaPlayerState { }
 
       /**
        * {@link #seekTo(int)}完成后的回调
@@ -363,107 +350,10 @@ public class MediaPlayerManager {
             /**
              * Called to indicate the completion of a seek operation.
              *
-             * @param manager manager
+             * @param mp mediaPlayer
              * @param position set to position
              */
-            void onSeekComplete (MediaPlayerManager manager, int position);
-      }
-
-      /**
-       * 播放完成监听
-       */
-      public interface OnCompletionListener {
-
-            /**
-             * 播放完成监听
-             *
-             * @param manager manager
-             */
-            void onCompletion (MediaPlayerManager manager);
-      }
-
-      public interface OnDataSourceErrorListener {
-
-            /**
-             * 通知用户数据错误
-             *
-             * @param manager manager , current is {@link MediaPlayerManager#MEDIA_STATE_IDLE},need
-             *     to reset
-             *     dataSource
-             * @param what same as {@link MediaPlayer.OnErrorListener}
-             * @param extra same as {@link MediaPlayer.OnErrorListener}
-             */
-            void onError (MediaPlayerManager manager, int what, int extra);
-      }
-
-      /**
-       * error助手类 打印error,释放原始mediaPlayer返回新的
-       */
-      private static class MediaErrorStateHelper {
-
-            private static final String TAG = "Media_Error_State:";
-
-            /**
-             * 处理media error 状态
-             *
-             * @param what 标记
-             * @param mediaPlayer 发生error的mediaPlayer
-             *
-             * @return 新 new 的 {@link MediaPlayer}
-             */
-            public static MediaPlayer handleErrorState (
-                int what, int extra, MediaPlayer mediaPlayer) {
-
-                  printErrorState(what, extra);
-
-                  if(what == MediaPlayer.MEDIA_ERROR_UNKNOWN
-                      || what == MediaPlayer.MEDIA_ERROR_SERVER_DIED) {
-
-                        mediaPlayer.release();
-                        return new MediaPlayer();
-                  }
-
-                  return mediaPlayer;
-            }
-
-            /**
-             * 打印状态
-             *
-             * @param what error state
-             */
-            static void printErrorState (int what, int extra) {
-
-                  String whatMsg = "";
-
-                  if(what == MediaPlayer.MEDIA_ERROR_UNKNOWN) {
-
-                        whatMsg = "MEDIA_ERROR_UNKNOWN";
-                  } else if(what == MediaPlayer.MEDIA_ERROR_SERVER_DIED) {
-
-                        whatMsg = "MEDIA_ERROR_SERVER_DIED";
-                  }
-
-                  String extraMsg = "";
-
-                  if(extra == MediaPlayer.MEDIA_ERROR_IO) {
-
-                        extraMsg = "MEDIA_ERROR_IO";
-                  } else if(extra == MediaPlayer.MEDIA_ERROR_MALFORMED) {
-
-                        extraMsg = "MEDIA_ERROR_MALFORMED";
-                  } else if(extra == MediaPlayer.MEDIA_ERROR_TIMED_OUT) {
-
-                        extraMsg = "MEDIA_ERROR_MALFORMED";
-                  } else if(extra == MediaPlayer.MEDIA_ERROR_UNSUPPORTED) {
-
-                        extraMsg = "MEDIA_ERROR_UNSUPPORTED";
-                  } else if(extra == -2147483648) {
-
-                        extraMsg = "low-level system error";
-                  }
-
-                  Log.i(TAG, "printErrorState:" + whatMsg + " " + extraMsg);
-            }
+            void onSeekComplete ( MediaPlayer mp, int position );
       }
 
       /**
@@ -474,24 +364,24 @@ public class MediaPlayerManager {
             /**
              * 用户设置的准备完毕监听
              */
-            private OnPreparedListener mUserOnPreparedListener;
+            private MediaPlayer.OnPreparedListener mUserOnPreparedListener;
 
             @Override
-            public void onPrepared (MediaPlayer mp) {
+            public void onPrepared ( MediaPlayer mp ) {
 
                   mCurrentMediaPlayerState = MEDIA_STATE_PREPARED;
 
-                  if(mUserOnPreparedListener != null) {
-                        mUserOnPreparedListener.onPrepared(MediaPlayerManager.this);
+                  if( mUserOnPreparedListener != null ) {
+                        mUserOnPreparedListener.onPrepared( mp );
                   }
 
                   mMediaPlayer.start();
                   mCurrentMediaPlayerState = MEDIA_STATE_STARTED;
             }
 
-            public void setUserOnPreparedListener (OnPreparedListener userOnPreparedListener) {
+            public void setUserOnPreparedListener ( MediaPlayer.OnPreparedListener onPreparedListener ) {
 
-                  mUserOnPreparedListener = userOnPreparedListener;
+                  mUserOnPreparedListener = onPreparedListener;
             }
       }
 
@@ -508,23 +398,23 @@ public class MediaPlayerManager {
             private int mSeekPosition;
 
             @Override
-            public void onSeekComplete (MediaPlayer mp) {
+            public void onSeekComplete ( MediaPlayer mp ) {
 
-                  if(mOnSeekCompleteListener != null) {
+                  if( mOnSeekCompleteListener != null ) {
 
                         mOnSeekCompleteListener.onSeekComplete(
-                            MediaPlayerManager.this,
+                            mp,
                             mSeekPosition
                         );
                   }
             }
 
-            void setSeekPosition (int seekPosition) {
+            void setSeekPosition ( int seekPosition ) {
 
                   mSeekPosition = seekPosition;
             }
 
-            void setOnSeekCompleteListener (OnSeekCompleteListener onSeekCompleteListener) {
+            void setOnSeekCompleteListener ( OnSeekCompleteListener onSeekCompleteListener ) {
 
                   mOnSeekCompleteListener = onSeekCompleteListener;
             }
@@ -535,18 +425,18 @@ public class MediaPlayerManager {
        */
       private class MediaOnCompletionListener implements MediaPlayer.OnCompletionListener {
 
-            private OnCompletionListener mOnCompletionListener;
+            private MediaPlayer.OnCompletionListener mOnCompletionListener;
 
             @Override
-            public void onCompletion (MediaPlayer mp) {
+            public void onCompletion ( MediaPlayer mp ) {
 
                   mCurrentMediaPlayerState = MEDIA_STATE_PLAYBACK_COMPLETED;
-                  if(mOnCompletionListener != null) {
-                        mOnCompletionListener.onCompletion(MediaPlayerManager.this);
+                  if( mOnCompletionListener != null ) {
+                        mOnCompletionListener.onCompletion( mp );
                   }
             }
 
-            void setOnCompletionListener (OnCompletionListener onCompletionListener) {
+            void setOnCompletionListener ( MediaPlayer.OnCompletionListener onCompletionListener ) {
 
                   mOnCompletionListener = onCompletionListener;
             }
@@ -559,26 +449,90 @@ public class MediaPlayerManager {
        */
       private class MediaOnErrorListener implements MediaPlayer.OnErrorListener {
 
-            private OnDataSourceErrorListener mOnDataSourceErrorListener;
+            private static final String TAG = "Media_Error_State:";
+
+            private MediaPlayer.OnErrorListener mOnErrorListener;
 
             @Override
-            public boolean onError (MediaPlayer mp, int what, int extra) {
+            public boolean onError ( MediaPlayer mp, int what, int extra ) {
 
                   mCurrentMediaPlayerState = MEDIA_STATE_ERROR;
-                  mMediaPlayer = MediaErrorStateHelper.handleErrorState(what, extra, mp);
+                  mMediaPlayer = handleErrorState( what, extra, mp );
                   mCurrentMediaPlayerState = MEDIA_STATE_IDLE;
 
-                  if(mOnDataSourceErrorListener != null) {
-                        mOnDataSourceErrorListener.onError(MediaPlayerManager.this, what, extra);
+                  if( mOnErrorListener != null ) {
+                        mOnErrorListener.onError( mp, what, extra );
                   }
 
                   return true;
             }
 
-            void setOnDataSourceErrorListener (
-                OnDataSourceErrorListener onDataSourceErrorListener) {
+            public void setOnErrorListener ( OnErrorListener onErrorListener ) {
 
-                  mOnDataSourceErrorListener = onDataSourceErrorListener;
+                  mOnErrorListener = onErrorListener;
+            }
+
+            /**
+             * 处理media error 状态
+             *
+             * @param what 标记
+             * @param mediaPlayer 发生error的mediaPlayer
+             *
+             * @return 新 new 的 {@link MediaPlayer}
+             */
+            private MediaPlayer handleErrorState (
+                int what, int extra, MediaPlayer mediaPlayer ) {
+
+                  printErrorState( what, extra );
+
+                  if( what == MediaPlayer.MEDIA_ERROR_UNKNOWN
+                      || what == MediaPlayer.MEDIA_ERROR_SERVER_DIED ) {
+
+                        mediaPlayer.release();
+                        createMediaPlayer();
+                        return mMediaPlayer;
+                  }
+
+                  return mediaPlayer;
+            }
+
+            /**
+             * 打印状态
+             *
+             * @param what error state
+             */
+            private void printErrorState ( int what, int extra ) {
+
+                  String whatMsg = "";
+
+                  if( what == MediaPlayer.MEDIA_ERROR_UNKNOWN ) {
+
+                        whatMsg = "MEDIA_ERROR_UNKNOWN";
+                  } else if( what == MediaPlayer.MEDIA_ERROR_SERVER_DIED ) {
+
+                        whatMsg = "MEDIA_ERROR_SERVER_DIED";
+                  }
+
+                  String extraMsg = "";
+
+                  if( extra == MediaPlayer.MEDIA_ERROR_IO ) {
+
+                        extraMsg = "MEDIA_ERROR_IO";
+                  } else if( extra == MediaPlayer.MEDIA_ERROR_MALFORMED ) {
+
+                        extraMsg = "MEDIA_ERROR_MALFORMED";
+                  } else if( extra == MediaPlayer.MEDIA_ERROR_TIMED_OUT ) {
+
+                        extraMsg = "MEDIA_ERROR_MALFORMED";
+                  } else if( extra == MediaPlayer.MEDIA_ERROR_UNSUPPORTED ) {
+
+                        extraMsg = "MEDIA_ERROR_UNSUPPORTED";
+                  } else if( extra == -2147483648 ) {
+
+                        extraMsg = "low-level system error";
+                  }
+
+                  Log.i( TAG, "printErrorState:" + whatMsg + " " + extraMsg );
             }
       }
 }
