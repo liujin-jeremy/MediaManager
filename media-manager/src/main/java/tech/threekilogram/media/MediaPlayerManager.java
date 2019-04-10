@@ -306,6 +306,7 @@ public class MediaPlayerManager {
 
             mMediaPlayer.reset();
             mMediaPlayer.release();
+            mMediaPlayer = null;
             mCurrentMediaPlayerState = MEDIA_STATE_END;
       }
 
@@ -315,6 +316,16 @@ public class MediaPlayerManager {
       public boolean isReleased ( ) {
 
             return mCurrentMediaPlayerState == MEDIA_STATE_END;
+      }
+
+      /**
+       * 重启,如果已经释放了
+       */
+      public void reCreateIfReleased ( ) {
+
+            if( isReleased() ) {
+                  createMediaPlayer();
+            }
       }
 
       /**
