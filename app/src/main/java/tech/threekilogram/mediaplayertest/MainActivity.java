@@ -12,7 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import java.util.List;
 import java.util.Locale;
-import tech.threekilogram.media.mediaplayer.MediaPlayerManager;
+import tech.threekilogram.media.MediaPlayerManager;
 import tech.threekilogram.mediaplayertest.action.QueryLocalSongsAction;
 import tech.threekilogram.mediaplayertest.bean.Song;
 
