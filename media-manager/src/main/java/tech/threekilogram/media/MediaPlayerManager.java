@@ -235,6 +235,15 @@ public class MediaPlayerManager {
       }
 
       /**
+       * 重置状态,将会停止播放
+       */
+      public void reset ( ) {
+
+            mMediaPlayer.reset();
+            mCurrentMediaPlayerState = MEDIA_STATE_IDLE;
+      }
+
+      /**
        * same as {@link MediaPlayer#getDuration()}
        *
        * @param errorCode 自己定义的error code,如果获取不到时长,返回该值,注意如果直播的类型的内容获取到的时长是-1
