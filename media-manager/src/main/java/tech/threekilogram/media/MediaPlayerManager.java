@@ -125,6 +125,11 @@ public class MediaPlayerManager {
             }
       }
 
+      public MediaPlayer getMediaPlayer ( ) {
+
+            return mMediaPlayer;
+      }
+
       public static String mediaStateString ( int currentMediaState ) {
 
             String result = "";
