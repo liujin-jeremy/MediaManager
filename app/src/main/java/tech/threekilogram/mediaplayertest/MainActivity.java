@@ -151,7 +151,8 @@ public class MainActivity extends AppCompatActivity {
             if( mMediaPlayerManager.isReleased() ) {
                   mMediaPlayerManager = new MediaPlayerManager();
             }
-            mMediaPlayerManager.play( "https://github.com/threekilogram/MediaManager/blob/master/mp3/test.mp3" );
+            mMediaPlayerManager.play(
+                "https://m7.music.126.net/20190410193722/d1e2fa98feadde669afa07d5754b01e5/ymusic/MTE5MzI0NDYzMA==/75df6504f90a41d0adafc304b04089ad.mp3" );
       }
 
       private class CompleteListener implements OnCompletionListener {
