@@ -1,142 +1,156 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".MainActivity">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
 
-    <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="vertical">
 
-        <LinearLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
+                  <Button
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:onClick="getCurrentMediaPlayerState"
+                      android:text="current state"/>
+
+                  <TextView
+                      android:id="@+id/tv01"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
+
             <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:onClick="getCurrentMediaPlayerState"
-                    android:text="current state"/>
-
-            <TextView
-                    android:id="@+id/tv01"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-        </LinearLayout>
-
-
-        <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="play"
                 android:text="Play"/>
 
-        <LinearLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-            <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:onClick="isPlaying"
-                    android:text="isPlaying"/>
+                  <Button
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:onClick="isPlaying"
+                      android:text="isPlaying"/>
 
-            <TextView
-                    android:id="@+id/tv00"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                  <TextView
+                      android:id="@+id/tv00"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"/>
 
-        </LinearLayout>
+            </LinearLayout>
 
-        <LinearLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-            <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:onClick="pause"
-                    android:text="pause"/>
+                  <Button
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:onClick="pause"
+                      android:text="pause"/>
 
-            <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:onClick="resume"
-                    android:text="resume"/>
+                  <Button
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:onClick="resume"
+                      android:text="resume"/>
 
-        </LinearLayout>
+            </LinearLayout>
 
-        <LinearLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
+                  <Button
+                      android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:onClick="getDuration"
+                      android:text="total"/>
+
+                  <TextView
+                      android:id="@+id/tv02"
+                      android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"/>
+
+                  <Button
+                      android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:onClick="currentPosition"
+                      android:text="current"/>
+
+                  <TextView
+                      android:id="@+id/tv03"
+                      android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"/>
+
+            </LinearLayout>
+
             <Button
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:onClick="getDuration"
-                    android:text="total"/>
-
-            <TextView
-                    android:id="@+id/tv02"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"/>
-
-            <Button
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:onClick="currentPosition"
-                    android:text="current"/>
-
-            <TextView
-                    android:id="@+id/tv03"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"/>
-
-        </LinearLayout>
-
-        <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="seekToStart"
                 android:text="seekToStart"/>
 
-        <LinearLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-            <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:onClick="prev"
-                    android:text="prev"/>
+                  <Button
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:onClick="prev"
+                      android:text="prev"/>
+
+                  <Button
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:onClick="next"
+                      android:text="next"/>
+
+            </LinearLayout>
 
             <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:onClick="next"
-                    android:text="next"/>
-
-        </LinearLayout>
-
-        <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="release"
                 android:text="release"/>
 
-    </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                  <Button
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:onClick="playFromNet"
+                      android:text="播放网络歌曲"/>
+
+
+            </LinearLayout>
+
+      </LinearLayout>
 
 </ScrollView>

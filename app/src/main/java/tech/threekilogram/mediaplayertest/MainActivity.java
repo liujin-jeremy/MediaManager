@@ -146,6 +146,14 @@ public class MainActivity extends AppCompatActivity {
             mMediaPlayerManager.release();
       }
 
+      public void playFromNet ( View view ) {
+
+            if( mMediaPlayerManager.isReleased() ) {
+                  mMediaPlayerManager = new MediaPlayerManager();
+            }
+            mMediaPlayerManager.play( "https://github.com/threekilogram/MediaManager/blob/master/mp3/test.mp3" );
+      }
+
       private class CompleteListener implements OnCompletionListener {
 
             @Override
@@ -163,7 +171,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onError ( MediaPlayer mp, int what, int extra ) {
 
-                  Log.e( TAG, "onError : data" );
+                  Log.e( TAG, "onError : data" + what + " " + extra );
 
                   return false;
             }
