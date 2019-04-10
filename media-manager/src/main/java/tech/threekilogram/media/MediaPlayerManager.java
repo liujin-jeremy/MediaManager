@@ -1,4 +1,4 @@
-package tech.threekilogram.media.mediaplayer;
+package tech.threekilogram.media;
 
 import android.media.AudioManager;
 import android.media.MediaPlayer;

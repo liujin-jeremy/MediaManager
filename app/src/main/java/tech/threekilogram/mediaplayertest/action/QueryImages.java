@@ -1,4 +1,4 @@
-package tech.threekilogram.media.query;
+package tech.threekilogram.mediaplayertest.action;
 
 import android.content.Context;
 import android.database.Cursor;

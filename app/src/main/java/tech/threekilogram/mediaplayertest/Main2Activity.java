@@ -5,8 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import java.util.List;
-import tech.threekilogram.media.query.QueryImages;
-import tech.threekilogram.media.query.QueryImages.Image;
+import tech.threekilogram.mediaplayertest.action.QueryImages;
+import tech.threekilogram.mediaplayertest.action.QueryImages.Image;
 
 /**
  * @author liujin
