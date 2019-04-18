@@ -1,15 +1,21 @@
 package tech.threekilogram.mediaplayertest;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.media.MediaPlayer.OnErrorListener;
 import android.media.MediaPlayer.OnPreparedListener;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import tech.threekilogram.media.MediaPlayerManager;
@@ -45,7 +51,33 @@ public class MainActivity extends AppCompatActivity {
       private void queryLocalSongs ( ) {
 
             if( mSongs == null || mSongs.size() == 0 ) {
-                  mSongs = QueryLocalSongsAction.queryLocalSongs( this );
+                  try {
+                        mSongs = QueryLocalSongsAction.queryLocalSongs( this );
+                  } catch(Exception e) {
+                        e.printStackTrace();
+                        requestSDPermission();
+                  }
+            }
+      }
+
+      private void requestSDPermission ( ) {
+
+            int permission = ContextCompat.checkSelfPermission( this, Manifest.permission.WRITE_EXTERNAL_STORAGE );
+            if( permission == PackageManager.PERMISSION_DENIED ) {
+                  ActivityCompat.requestPermissions( this, new String[]{ Manifest.permission.WRITE_EXTERNAL_STORAGE }, 1002 );
+            }
+      }
+
+      @Override
+      public void onRequestPermissionsResult (
+          int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults ) {
+
+            super.onRequestPermissionsResult( requestCode, permissions, grantResults );
+            if( requestCode == 1002 ) {
+                  int result = grantResults[ 0 ];
+                  if( result != PackageManager.PERMISSION_GRANTED ) {
+                        mSongs = new ArrayList<>();
+                  }
             }
       }
 
