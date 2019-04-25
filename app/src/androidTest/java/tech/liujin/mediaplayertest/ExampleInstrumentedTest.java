@@ -1,6 +1,6 @@
-package tech.threekilogram.media;
+package tech.liujin.mediaplayertest;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -20,6 +20,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("tech.threekilogram.mediaplayermanager.test", appContext.getPackageName());
+        assertEquals("tech.threekilogram.mediaplayertest", appContext.getPackageName());
     }
 }

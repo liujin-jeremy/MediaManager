@@ -1,14 +1,12 @@
-package tech.threekilogram.mediaplayertest.action;
+package tech.liujin.mediaplayertest.action;
 
 import android.content.Context;
 import android.database.Cursor;
 import android.provider.MediaStore;
 import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.List;
-
-import tech.threekilogram.mediaplayertest.bean.Song;
+import tech.liujin.mediaplayertest.bean.Song;
 
 /**
  * @author wuxio 2018-05-28:13:45

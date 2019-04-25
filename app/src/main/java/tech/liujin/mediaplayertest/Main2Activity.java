@@ -1,12 +1,12 @@
-package tech.threekilogram.mediaplayertest;
+package tech.liujin.mediaplayertest;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import java.util.List;
-import tech.threekilogram.mediaplayertest.action.QueryImages;
-import tech.threekilogram.mediaplayertest.action.QueryImages.Image;
+import tech.liujin.mediaplayertest.action.QueryImages;
+import tech.liujin.mediaplayertest.action.QueryImages.Image;
 
 /**
  * @author liujin

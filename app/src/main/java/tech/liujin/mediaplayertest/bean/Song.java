@@ -1,4 +1,4 @@
-package tech.threekilogram.mediaplayertest.bean;
+package tech.liujin.mediaplayertest.bean;
 
 /**
  * 歌曲 bean 对象

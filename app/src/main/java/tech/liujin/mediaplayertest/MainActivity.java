@@ -1,4 +1,4 @@
-package tech.threekilogram.mediaplayertest;
+package tech.liujin.mediaplayertest;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -18,9 +18,9 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import tech.threekilogram.media.MediaPlayerManager;
-import tech.threekilogram.mediaplayertest.action.QueryLocalSongsAction;
-import tech.threekilogram.mediaplayertest.bean.Song;
+import tech.liujin.media.MediaPlayerManager;
+import tech.liujin.mediaplayertest.action.QueryLocalSongsAction;
+import tech.liujin.mediaplayertest.bean.Song;
 
 /**
  * @author wuxio
