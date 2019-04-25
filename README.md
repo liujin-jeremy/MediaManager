@@ -2,7 +2,7 @@
 ## MediaPlayer 封装
 
 ```
-implementation 'tech.liujin:media-manager:1.0.0'
+implementation 'tech.liujin:media-manager:1.0.1'
 ```
 
 ### 创建
