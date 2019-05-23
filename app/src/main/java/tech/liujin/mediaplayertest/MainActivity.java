@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import tech.liujin.media.MediaPlayerManager;
+import tech.liujin.media.MediaPlayerManager.OnSeekCompleteListener;
 import tech.liujin.mediaplayertest.action.QueryLocalSongsAction;
 import tech.liujin.mediaplayertest.bean.Song;
 
@@ -135,8 +136,13 @@ public class MainActivity extends AppCompatActivity {
       public void seekToStart ( View view ) {
 
             mMediaPlayerManager.setOnSeekCompleteListener(
-                ( manager, position ) -> {
-                      Log.i( TAG, "onSeekComplete:" + position );
+                new OnSeekCompleteListener() {
+
+                      @Override
+                      public void onSeekComplete ( MediaPlayer mp, int position ) {
+
+                            Log.i( TAG, "onSeekComplete:" + position );
+                      }
                 }
             );
             mMediaPlayerManager.seekTo( 0 );
