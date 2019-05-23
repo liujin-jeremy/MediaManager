@@ -22,3 +22,7 @@ dependencies {
     implementation 'tech.threekilogram:object-bus:3.0.1'
     implementation project(':MediaManager')
 }
+
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+}
