@@ -2,6 +2,8 @@ package tech.liujin.media;
 
 import android.content.Context;
 import android.content.res.AssetFileDescriptor;
+import android.media.AudioAttributes;
+import android.media.AudioAttributes.Builder;
 import android.media.AudioManager;
 import android.media.MediaDataSource;
 import android.media.MediaPlayer;
@@ -30,64 +32,70 @@ public class MediaPlayerManager {
       /**
        * 闲置播放状态
        */
-      public static final int                         MEDIA_STATE_IDLE               = 0;
+      public static final int MEDIA_STATE_IDLE        = 0;
       /**
        * 播放器已经初始化
        */
-      public static final int                         MEDIA_STATE_INITIALIZED        = 1;
+      public static final int MEDIA_STATE_INITIALIZED = 1;
       /**
        * 播放器准备中
        */
-      public static final int                         MEDIA_STATE_PREPARING          = 2;
+      public static final int MEDIA_STATE_PREPARING   = 2;
       /**
        * 播放器准备完成
        */
-      public static final int                         MEDIA_STATE_PREPARED           = 3;
+      public static final int MEDIA_STATE_PREPARED    = 3;
       /**
        * 开始播放
        */
-      public static final int                         MEDIA_STATE_STARTED            = 4;
+      public static final int MEDIA_STATE_STARTED     = 4;
       /**
        * 暂停
        */
-      public static final int                         MEDIA_STATE_PAUSED             = 5;
+      public static final int MEDIA_STATE_PAUSED      = 5;
       /**
        * 停止
        */
-      public static final int                         MEDIA_STATE_STOPPED            = 6;
+      public static final int MEDIA_STATE_STOPPED     = 6;
       /**
        * 播放完成
        */
-      public static final int                         MEDIA_STATE_PLAYBACK_COMPLETED = 7;
+      public static final int MEDIA_STATE_COMPLETED   = 7;
       /**
        * 异常
        */
-      public static final int                         MEDIA_STATE_ERROR              = 99;
+      public static final int MEDIA_STATE_ERROR       = 99;
       /**
        * 释放播放器
        */
-      public static final int                         MEDIA_STATE_END                = 100;
+      public static final int MEDIA_STATE_RELEASED    = 100;
+
+      /**
+       * 当前运行状态
+       */
+      @MediaPlayerState
+      private int mCurrentMediaPlayerState;
+
       /**
        * 播放器
        */
-      private             MediaPlayer                 mMediaPlayer;
+      private MediaPlayer                 mMediaPlayer;
       /**
        * 播放器异常处理类
        */
-      private             MediaOnErrorListener        mMediaOnErrorListener;
+      private MediaOnErrorListener        mMediaOnErrorListener;
       /**
        * 准备播放
        */
-      private             MediaOnPreparedListener     mMediaOnPreparedListener;
+      private MediaOnPreparedListener     mMediaOnPreparedListener;
       /**
        * 播放完成
        */
-      private             MediaOnCompletionListener   mMediaOnCompletionListener;
+      private MediaOnCompletionListener   mMediaOnCompletionListener;
       /**
        * 调整播放进度
        */
-      private             MediaOnSeekCompleteListener mMediaOnSeekCompleteListener;
-      private             int                         mCurrentMediaPlayerState;
+      private MediaOnSeekCompleteListener mMediaOnSeekCompleteListener;
 
       public MediaPlayerManager ( ) {
 
@@ -102,7 +110,12 @@ public class MediaPlayerManager {
             mMediaPlayer = new MediaPlayer();
             mCurrentMediaPlayerState = MEDIA_STATE_IDLE;
 
-            mMediaPlayer.setAudioStreamType( AudioManager.STREAM_MUSIC );
+            if( android.os.Build.VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP ) {
+                  AudioAttributes attributes = new Builder().setLegacyStreamType( AudioManager.STREAM_MUSIC ).build();
+                  mMediaPlayer.setAudioAttributes( attributes );
+            } else {
+                  mMediaPlayer.setAudioStreamType( AudioManager.STREAM_MUSIC );
+            }
 
             makeSureListenerNotNull();
             mMediaPlayer.setOnErrorListener( mMediaOnErrorListener );
@@ -167,10 +180,10 @@ public class MediaPlayerManager {
             } else if( currentMediaState == MEDIA_STATE_STOPPED ) {
 
                   result = "media state : STOPPED";
-            } else if( currentMediaState == MEDIA_STATE_PLAYBACK_COMPLETED ) {
+            } else if( currentMediaState == MEDIA_STATE_COMPLETED ) {
 
                   result = "media state : PLAYBACK_COMPLETED";
-            } else if( currentMediaState == MEDIA_STATE_END ) {
+            } else if( currentMediaState == MEDIA_STATE_RELEASED ) {
 
                   result = "media state : released " + currentMediaState;
             } else if( currentMediaState == MEDIA_STATE_ERROR ) {
@@ -433,7 +446,7 @@ public class MediaPlayerManager {
             int state = mCurrentMediaPlayerState;
             if( state == MEDIA_STATE_STARTED ||
                 state == MEDIA_STATE_PAUSED ||
-                state == MEDIA_STATE_PLAYBACK_COMPLETED ) {
+                state == MEDIA_STATE_COMPLETED ) {
                   return mMediaPlayer.getDuration();
             }
 
@@ -458,7 +471,7 @@ public class MediaPlayerManager {
             int state = mCurrentMediaPlayerState;
             if( state == MEDIA_STATE_STARTED ||
                 state == MEDIA_STATE_PAUSED ||
-                state == MEDIA_STATE_PLAYBACK_COMPLETED ) {
+                state == MEDIA_STATE_COMPLETED ) {
 
                   mMediaOnSeekCompleteListener.setSeekPosition( position );
                   mMediaPlayer.seekTo( position );
@@ -499,7 +512,7 @@ public class MediaPlayerManager {
             mMediaPlayer.reset();
             mMediaPlayer.release();
             mMediaPlayer = null;
-            mCurrentMediaPlayerState = MEDIA_STATE_END;
+            mCurrentMediaPlayerState = MEDIA_STATE_RELEASED;
       }
 
       /**
@@ -507,7 +520,7 @@ public class MediaPlayerManager {
        */
       public boolean isReleased ( ) {
 
-            return mCurrentMediaPlayerState == MEDIA_STATE_END;
+            return mCurrentMediaPlayerState == MEDIA_STATE_RELEASED;
       }
 
       /**
@@ -524,7 +537,7 @@ public class MediaPlayerManager {
        * 设置数据数据错误监听
        */
       public void setOnErrorListener (
-          MediaPlayer.OnErrorListener onDataSourceErrorListener ) {
+          OnErrorListener onDataSourceErrorListener ) {
 
             mMediaOnErrorListener.setOnErrorListener( onDataSourceErrorListener );
       }
@@ -540,7 +553,7 @@ public class MediaPlayerManager {
           MEDIA_STATE_STARTED,
           MEDIA_STATE_PAUSED,
           MEDIA_STATE_STOPPED,
-          MEDIA_STATE_PLAYBACK_COMPLETED,
+          MEDIA_STATE_COMPLETED,
       })
       @Retention(RetentionPolicy.SOURCE)
       public @interface MediaPlayerState { }
@@ -633,7 +646,7 @@ public class MediaPlayerManager {
             @Override
             public void onCompletion ( MediaPlayer mp ) {
 
-                  mCurrentMediaPlayerState = MEDIA_STATE_PLAYBACK_COMPLETED;
+                  mCurrentMediaPlayerState = MEDIA_STATE_COMPLETED;
                   if( mOnCompletionListener != null ) {
                         mOnCompletionListener.onCompletion( mp );
                   }
@@ -650,11 +663,11 @@ public class MediaPlayerManager {
        * {@link MediaPlayer#prepare()}和{@link MediaPlayer#prepareAsync()}可能会触发异常,
        * {@link MediaPlayer#setDataSource(String)} ()}这一系列方法同样可能触发异常
        */
-      private class MediaOnErrorListener implements MediaPlayer.OnErrorListener {
+      private class MediaOnErrorListener implements OnErrorListener {
 
             private static final String TAG = "Media_Error_State:";
 
-            private MediaPlayer.OnErrorListener mOnErrorListener;
+            private OnErrorListener mOnErrorListener;
 
             @Override
             public boolean onError ( MediaPlayer mp, int what, int extra ) {
