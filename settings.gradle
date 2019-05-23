@@ -1,1 +1,1 @@
-include ':app', ':MediaManager'
+include ':app', ':MediaPlayerManager'
