@@ -1,12 +1,24 @@
 package tech.liujin.media;
 
+import android.content.Context;
+import android.content.res.AssetFileDescriptor;
 import android.media.AudioManager;
+import android.media.MediaDataSource;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnErrorListener;
+import android.net.Uri;
+import android.os.Build.VERSION_CODES;
 import android.support.annotation.IntDef;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.util.Log;
+import java.io.FileDescriptor;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.net.HttpCookie;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 封装 {@link MediaPlayer} 提供基本功能
@@ -182,24 +194,190 @@ public class MediaPlayerManager {
       }
 
       /**
-       * @param path 播放
+       * @param path filePath or a url
+       *
+       * @see MediaPlayer#setDataSource(String)
        */
       public void play ( String path ) {
 
             try {
 
-                  mMediaPlayer.reset();
-                  mCurrentMediaPlayerState = MEDIA_STATE_IDLE;
+                  reset();
 
                   mMediaPlayer.setDataSource( path );
                   mCurrentMediaPlayerState = MEDIA_STATE_INITIALIZED;
 
-                  mCurrentMediaPlayerState = MEDIA_STATE_PREPARING;
-                  mMediaPlayer.prepareAsync();
+                  prepareAsync();
             } catch(Exception e) {
 
                   e.printStackTrace();
             }
+      }
+
+      /**
+       * @param afd FileDescriptor
+       *
+       * @see MediaPlayer#setDataSource(AssetFileDescriptor)
+       */
+      @RequiresApi(api = VERSION_CODES.N)
+      public void play ( @NonNull AssetFileDescriptor afd ) {
+
+            try {
+
+                  reset();
+
+                  mMediaPlayer.setDataSource( afd );
+                  mCurrentMediaPlayerState = MEDIA_STATE_INITIALIZED;
+
+                  prepareAsync();
+            } catch(Exception e) {
+
+                  e.printStackTrace();
+            }
+      }
+
+      /**
+       * @param context context
+       * @param uri uri resource uri
+       *
+       * @see MediaPlayer#setDataSource(Context, Uri)
+       */
+      public void play ( @NonNull Context context, @NonNull Uri uri ) {
+
+            try {
+
+                  reset();
+
+                  mMediaPlayer.setDataSource( context, uri );
+                  mCurrentMediaPlayerState = MEDIA_STATE_INITIALIZED;
+
+                  prepareAsync();
+            } catch(Exception e) {
+
+                  e.printStackTrace();
+            }
+      }
+
+      /**
+       * @param context context
+       * @param uri uri resource uri
+       * @param headers headers
+       *
+       * @see MediaPlayer#setDataSource(Context, Uri, Map)
+       */
+      public void play ( @NonNull Context context, @NonNull Uri uri, @Nullable Map<String, String> headers ) {
+
+            try {
+
+                  reset();
+
+                  mMediaPlayer.setDataSource( context, uri, headers );
+                  mCurrentMediaPlayerState = MEDIA_STATE_INITIALIZED;
+
+                  prepareAsync();
+            } catch(Exception e) {
+
+                  e.printStackTrace();
+            }
+      }
+
+      /**
+       * @param context context
+       * @param uri uri resource uri
+       *
+       * @see MediaPlayer#setDataSource(Context, Uri, Map, List)
+       */
+      @RequiresApi(api = VERSION_CODES.O)
+      public void play (
+          @NonNull Context context,
+          @NonNull Uri uri,
+          @Nullable Map<String, String> headers,
+          @Nullable List<HttpCookie> cookies ) {
+
+            try {
+
+                  reset();
+
+                  mMediaPlayer.setDataSource( context, uri, headers, cookies );
+                  mCurrentMediaPlayerState = MEDIA_STATE_INITIALIZED;
+
+                  prepareAsync();
+            } catch(Exception e) {
+
+                  e.printStackTrace();
+            }
+      }
+
+      /**
+       * @param fd fd
+       *
+       * @see MediaPlayer#setDataSource(FileDescriptor)
+       */
+      public void play ( FileDescriptor fd ) {
+
+            try {
+
+                  reset();
+
+                  mMediaPlayer.setDataSource( fd );
+                  mCurrentMediaPlayerState = MEDIA_STATE_INITIALIZED;
+
+                  prepareAsync();
+            } catch(Exception e) {
+
+                  e.printStackTrace();
+            }
+      }
+
+      /**
+       * @param fd fd
+       * @param offset offset
+       * @param length length
+       *
+       * @see MediaPlayer#setDataSource(FileDescriptor, long, long)
+       */
+      public void play ( FileDescriptor fd, long offset, long length ) {
+
+            try {
+
+                  reset();
+
+                  mMediaPlayer.setDataSource( fd );
+                  mCurrentMediaPlayerState = MEDIA_STATE_INITIALIZED;
+
+                  prepareAsync();
+            } catch(Exception e) {
+
+                  e.printStackTrace();
+            }
+      }
+
+      /**
+       * @param dataSource source
+       *
+       * @see MediaPlayer#setDataSource(MediaDataSource)
+       */
+      @RequiresApi(api = VERSION_CODES.M)
+      public void play ( MediaDataSource dataSource ) {
+
+            try {
+
+                  reset();
+
+                  mMediaPlayer.setDataSource( dataSource );
+                  mCurrentMediaPlayerState = MEDIA_STATE_INITIALIZED;
+
+                  prepareAsync();
+            } catch(Exception e) {
+
+                  e.printStackTrace();
+            }
+      }
+
+      private void prepareAsync ( ) {
+
+            mCurrentMediaPlayerState = MEDIA_STATE_PREPARING;
+            mMediaPlayer.prepareAsync();
       }
 
       /**
